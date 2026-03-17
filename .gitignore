@@ -7,3 +7,17 @@ build/
 *.pyc
 models/
 docs/
+.DS_Store
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.db
+*.sqlite
+*.sqlite3
+.memory/
+memory/
+config.local.yaml
+config.*.local.yaml
