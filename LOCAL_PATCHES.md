@@ -27,6 +27,41 @@ pipx install --force --editable /Volumes/Flash500Gb/MAC/.codex-local/echovault-f
 
 ## Maintenance
 
-- Keep the branch local unless you decide to publish your own fork.
+- This fork is published at `git@github.com:Den4ikLucky/echovault.git`.
+- `origin` should point to your fork and `upstream` should point to `https://github.com/mraza007/echovault`.
 - If you pull upstream changes later, re-run semantic retrieval tests before trusting the merge.
 - The active memory config still lives outside the repo at `~/.memory/config.yaml`.
+
+## Safe sync workflow
+
+Refresh local references:
+
+```bash
+git fetch upstream
+git fetch origin
+```
+
+Rebase the tuning branch onto the latest upstream main:
+
+```bash
+git checkout codex/semantic-search-tuning
+git rebase upstream/main
+```
+
+If the rebase succeeds, push the updated branch back to your fork:
+
+```bash
+git push --force-with-lease origin codex/semantic-search-tuning
+```
+
+Reinstall the editable CLI only if needed:
+
+```bash
+pipx install --force --editable /Volumes/Flash500Gb/MAC/.codex-local/echovault-fork
+```
+
+## Secret hygiene
+
+- Do not commit `~/.memory/config.yaml` or anything under `~/.memory/`.
+- Do not commit `.env` files, private keys, or local SQLite/DB artifacts.
+- The repo `.gitignore` is hardened to block common local secret and state files.
