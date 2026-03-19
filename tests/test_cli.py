@@ -419,6 +419,16 @@ def test_search_no_results(env_home):
     assert "No results found." in result.output
 
 
+def test_search_blank_query_shows_helpful_message(env_home):
+    """Blank search input should explain the problem instead of acting like a miss."""
+    runner = CliRunner()
+    result = runner.invoke(main, ["search", ""])
+
+    assert result.exit_code == 0
+    assert "Search query is empty." in result.output
+    assert "No results found." not in result.output
+
+
 def test_search_shows_details_hint(env_home):
     """Test that memory search shows hint for available details."""
     service = MemoryService(memory_home=str(env_home))

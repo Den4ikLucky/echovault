@@ -218,6 +218,10 @@ def save(
 @click.option("--source", default=None, help="Filter by source")
 def search(query, limit, project, source):
     """Search memories using hybrid FTS5 + semantic search."""
+    if not query.strip():
+        click.echo("Search query is empty.")
+        return
+
     project_name = os.path.basename(os.getcwd()) if project else None
 
     svc = MemoryService()
