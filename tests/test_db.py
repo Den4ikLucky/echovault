@@ -156,6 +156,20 @@ def test_build_fts_query_falls_back_for_short_query():
     assert query == '"ai"*'
 
 
+def test_build_fts_query_returns_empty_for_blank_query():
+    """Blank queries should not produce invalid FTS syntax."""
+    query = _build_fts_query("")
+    assert query == ""
+
+
+def test_fts_search_returns_empty_for_blank_query(db, sample_memory):
+    """Blank queries should return no FTS results instead of raising SQL errors."""
+    db.insert_memory(sample_memory)
+
+    results = db.fts_search("", limit=10)
+    assert results == []
+
+
 def test_insert_and_search_vectors(db):
     """Test inserting and searching vectors."""
     # Set up vec table with correct dimension

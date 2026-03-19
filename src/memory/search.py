@@ -125,6 +125,9 @@ def tiered_search(
     Returns:
         Search results sorted by score descending
     """
+    if not query.strip():
+        return []
+
     fts_results = db.fts_search(query, limit=limit * 2, project=project, source=source)
 
     # Normalize FTS scores to 0-1
@@ -203,6 +206,9 @@ def hybrid_search(
     Returns:
         Merged and re-ranked search results
     """
+    if not query.strip():
+        return []
+
     fts_results = db.fts_search(query, limit=limit * 2, project=project, source=source)
 
     if embedding_provider is None:

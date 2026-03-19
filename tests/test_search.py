@@ -298,6 +298,20 @@ class TestTieredSearch:
         # Should still return FTS results despite embed failure
         assert len(results) == 1
 
+    def test_tiered_search_returns_empty_for_blank_query(self):
+        """Blank search input should not hit FTS or embeddings."""
+        from unittest.mock import MagicMock
+        from memory.search import tiered_search
+
+        db = MagicMock()
+        embed_provider = MagicMock()
+
+        results = tiered_search(db, embed_provider, "", limit=5)
+
+        assert results == []
+        db.fts_search.assert_not_called()
+        embed_provider.embed.assert_not_called()
+
 
     def test_preserves_result_metadata(self):
         """Should preserve all fields from original results."""

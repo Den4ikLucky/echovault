@@ -62,6 +62,9 @@ def _build_fts_query(query: str) -> str:
             unique_terms.append(term)
             seen.add(term)
 
+    if not unique_terms:
+        return ""
+
     return " OR ".join(f'"{term}"*' for term in unique_terms)
 
 
@@ -447,6 +450,8 @@ class MemoryDB:
         """
         # Build prefix matching query while filtering obvious stop-word noise.
         fts_query = _build_fts_query(query)
+        if not fts_query:
+            return []
 
         # Build WHERE clause for filters
         where_clauses = []
